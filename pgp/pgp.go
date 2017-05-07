@@ -124,20 +124,20 @@ func Decrypt(entity *openpgp.Entity, encrypted []byte) ([]byte, error) {
 }
 
 func GetEntity(publicKey []byte, privateKey []byte) (*openpgp.Entity, error) {
-	publicKeyEntity, err := GetPublicKey(publicKey)
+	publicKeyPacket, err := GetPublicKeyPacket(publicKey)
 	if err != nil {
 		return nil, err
 	}
 
-	privateKeyEntity, err := GetPrivateKey(privateKey)
+	privateKeyPacket, err := GetPrivateKeyPacket(privateKey)
 	if err != nil {
 		return nil, err
 	}
 
-	return createEntityFromKeys(publicKeyEntity, privateKeyEntity)
+	return CreateEntityFromKeys(publicKeyPacket, privateKeyPacket)
 }
 
-func GetPublicKey(publicKey []byte) (*packet.PublicKey, error) {
+func GetPublicKeyPacket(publicKey []byte) (*packet.PublicKey, error) {
 	publicKeyReader := bytes.NewReader(publicKey)
 	block, err := armor.Decode(publicKeyReader)
 	if err != nil {
@@ -161,7 +161,7 @@ func GetPublicKey(publicKey []byte) (*packet.PublicKey, error) {
 	return key, nil
 }
 
-func GetPrivateKey(privateKey []byte) (*packet.PrivateKey, error) {
+func GetPrivateKeyPacket(privateKey []byte) (*packet.PrivateKey, error) {
 	privateKeyReader := bytes.NewReader(privateKey)
 	block, err := armor.Decode(privateKeyReader)
 	if err != nil {
@@ -185,7 +185,7 @@ func GetPrivateKey(privateKey []byte) (*packet.PrivateKey, error) {
 }
 
 // From https://gist.github.com/eliquious/9e96017f47d9bd43cdf9
-func createEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
+func CreateEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
 	config := packet.Config{
 		DefaultHash:            crypto.SHA256,
 		DefaultCipher:          packet.CipherAES256,

@@ -8,19 +8,33 @@ import (
 )
 
 func TestPGP(t *testing.T) {
-	entity, err := pgp.GetEntity([]byte(TestPublicKey), []byte(TestPrivateKey))
+	// Create public key entity
+	publicKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
+	if err != nil {
+		t.Error(err)
+	}
+
+	pubEntity, err := pgp.CreateEntityFromKeys(publicKeyPacket, nil)
 	if err != nil {
 		t.Error(fmt.Errorf("Error getting entity: %v", err))
 	}
 
+	// Encrypt message
 	fmt.Printf("Test message: %s\n", TestMessage)
-	encrypted, err := pgp.Encrypt(entity, []byte(TestMessage))
+	encrypted, err := pgp.Encrypt(pubEntity, []byte(TestMessage))
 	if err != nil {
 		t.Error(err)
 	}
 	fmt.Printf("Encrypted:\n%s\n\n", encrypted)
 
-	decrypted, err := pgp.Decrypt(entity, encrypted)
+	// Create private key entity
+	privEntity, err := pgp.GetEntity([]byte(TestPublicKey), []byte(TestPrivateKey))
+	if err != nil {
+		t.Error(fmt.Errorf("Error getting entity: %v", err))
+	}
+
+	// Decrypt message
+	decrypted, err := pgp.Decrypt(privEntity, encrypted)
 	if err != nil {
 		t.Error(err)
 	}
