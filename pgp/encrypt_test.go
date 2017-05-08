@@ -19,7 +19,7 @@ func TestEncrypt(t *testing.T) {
 	}
 
 	// Encrypt message
-	fmt.Printf("Test message: %s\n", TestMessage)
+	fmt.Printf("Test message:\n%s\n\n", TestMessage)
 	encrypted, err := pgp.Encrypt(pubEntity, []byte(TestMessage))
 	if err != nil {
 		t.Error(err)

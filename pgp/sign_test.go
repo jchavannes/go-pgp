@@ -14,12 +14,12 @@ func TestSign(t *testing.T) {
 	}
 
 	// Sign message
-	fmt.Printf("Test message: %s\n", TestMessage)
+	fmt.Printf("Test message:\n%s\n\n", TestMessage)
 	signature, err := pgp.Sign(entity, []byte(TestMessage))
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Printf("Signature: %s\n", signature)
+	fmt.Printf("Signature:\n%s\n\n", signature)
 
 	// Create public key entity
 	pubKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
