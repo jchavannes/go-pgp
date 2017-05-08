@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestPGP(t *testing.T) {
+func TestEncrypt(t *testing.T) {
 	// Create public key entity
 	publicKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
 	if err != nil {
