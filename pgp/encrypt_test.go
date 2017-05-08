@@ -13,7 +13,6 @@ func TestEncrypt(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 	pubEntity, err := pgp.CreateEntityFromKeys(publicKeyPacket, nil)
 	if err != nil {
 		t.Error(fmt.Errorf("Error getting entity: %v", err))
