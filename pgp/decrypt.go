@@ -23,8 +23,7 @@ func Decrypt(entity *openpgp.Entity, encrypted []byte) ([]byte, error) {
 	}
 
 	// Decrypt message
-	var entityList openpgp.EntityList
-	entityList = append(entityList, entity)
+	entityList := openpgp.EntityList{entity}
 	messageReader, err := openpgp.ReadMessage(block.Body, entityList, nil, nil)
 	if err != nil {
 		return []byte{}, fmt.Errorf("Error reading message: %v", err)

@@ -21,7 +21,7 @@ func TestSign(t *testing.T) {
 	}
 	fmt.Printf("Signature:\n%s\n\n", signature)
 
-	// Create public key entity
+	// Create public key packet
 	pubKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
 	if err != nil {
 		t.Error(err)
