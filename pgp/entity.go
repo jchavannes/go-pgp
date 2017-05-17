@@ -12,9 +12,12 @@ func GetEntity(publicKey []byte, privateKey []byte) (*openpgp.Entity, error) {
 		return nil, err
 	}
 
-	privateKeyPacket, err := GetPrivateKeyPacket(privateKey)
-	if err != nil {
-		return nil, err
+	var privateKeyPacket *packet.PrivateKey
+	if len(privateKey) > 0 {
+		privateKeyPacket, err = GetPrivateKeyPacket(privateKey)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return CreateEntityFromKeys(publicKeyPacket, privateKeyPacket)
