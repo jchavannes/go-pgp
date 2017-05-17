@@ -7,24 +7,24 @@ import (
 )
 
 func GetEntity(publicKey []byte, privateKey []byte) (*openpgp.Entity, error) {
-	publicKeyPacket, err := GetPublicKeyPacket(publicKey)
+	publicKeyPacket, err := getPublicKeyPacket(publicKey)
 	if err != nil {
 		return nil, err
 	}
 
 	var privateKeyPacket *packet.PrivateKey
 	if len(privateKey) > 0 {
-		privateKeyPacket, err = GetPrivateKeyPacket(privateKey)
+		privateKeyPacket, err = getPrivateKeyPacket(privateKey)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	return CreateEntityFromKeys(publicKeyPacket, privateKeyPacket)
+	return createEntityFromKeys(publicKeyPacket, privateKeyPacket)
 }
 
 // From https://gist.github.com/eliquious/9e96017f47d9bd43cdf9
-func CreateEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
+func createEntityFromKeys(pubKey *packet.PublicKey, privKey *packet.PrivateKey) (*openpgp.Entity, error) {
 	config := packet.Config{
 		DefaultHash:            crypto.SHA256,
 		DefaultCipher:          packet.CipherAES256,

@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/openpgp"
 )
 
-func GetPublicKeyPacket(publicKey []byte) (*packet.PublicKey, error) {
+func getPublicKeyPacket(publicKey []byte) (*packet.PublicKey, error) {
 	publicKeyReader := bytes.NewReader(publicKey)
 	block, err := armor.Decode(publicKeyReader)
 	if err != nil {
@@ -32,7 +32,7 @@ func GetPublicKeyPacket(publicKey []byte) (*packet.PublicKey, error) {
 	return key, nil
 }
 
-func GetPrivateKeyPacket(privateKey []byte) (*packet.PrivateKey, error) {
+func getPrivateKeyPacket(privateKey []byte) (*packet.PrivateKey, error) {
 	privateKeyReader := bytes.NewReader(privateKey)
 	block, err := armor.Decode(privateKeyReader)
 	if err != nil {

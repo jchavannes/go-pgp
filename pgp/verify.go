@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-func Verify(pubKey *packet.PublicKey, message []byte, signature []byte) error {
+func Verify(publicKeyEntity *openpgp.Entity, message []byte, signature []byte) error {
 	sig, err := decodeSignature(signature)
 	if err != nil {
 		return err
@@ -19,7 +19,7 @@ func Verify(pubKey *packet.PublicKey, message []byte, signature []byte) error {
 	messageReader := bytes.NewReader(message)
 	io.Copy(hash, messageReader)
 
-	err = pubKey.VerifySignature(hash, sig)
+	err = publicKeyEntity.PrimaryKey.VerifySignature(hash, sig)
 	if err != nil {
 		return err
 	}

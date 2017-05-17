@@ -6,32 +6,30 @@ import (
 	"github.com/jchavannes/go-pgp/pgp"
 )
 
-func TestSign(t *testing.T) {
-	// Create private key entity
+func TestSignature(t *testing.T) {
+	fmt.Println("Signature test: START")
 	entity, err := pgp.GetEntity([]byte(TestPublicKey), []byte(TestPrivateKey))
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println("Created private key entity.")
 
-	// Sign message
-	fmt.Printf("Test message:\n%s\n\n", TestMessage)
 	signature, err := pgp.Sign(entity, []byte(TestMessage))
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Printf("Signature:\n%s\n\n", signature)
+	fmt.Println("Created signature of test message with private key entity.")
 
-	// Create public key packet
-	pubKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
+	publicKeyEntity, err := pgp.GetEntity([]byte(TestPublicKey), []byte{})
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println("Created public key entity.")
 
-	// Verify signature
-	err = pgp.Verify(pubKeyPacket, []byte(TestMessage), signature)
+	err = pgp.Verify(publicKeyEntity, []byte(TestMessage), signature)
 	if err != nil {
 		t.Error(err)
-	} else {
-		fmt.Println("Signature verified.")
 	}
+	fmt.Println("Signature verified using public key entity.")
+	fmt.Println("Signature test: END\n")
 }

@@ -8,40 +8,37 @@ import (
 )
 
 func TestEncrypt(t *testing.T) {
-	// Create public key entity
-	publicKeyPacket, err := pgp.GetPublicKeyPacket([]byte(TestPublicKey))
-	if err != nil {
-		t.Error(err)
-	}
-	pubEntity, err := pgp.CreateEntityFromKeys(publicKeyPacket, nil)
+	fmt.Println("Entcrypt test: START")
+	pubEntity, err := pgp.GetEntity([]byte(TestPublicKey), []byte{})
 	if err != nil {
 		t.Error(fmt.Errorf("Error getting entity: %v", err))
 	}
+	fmt.Println("Created public key entity.")
 
-	// Encrypt message
-	fmt.Printf("Test message:\n%s\n\n", TestMessage)
 	encrypted, err := pgp.Encrypt(pubEntity, []byte(TestMessage))
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Printf("Encrypted:\n%s\n\n", encrypted)
+	fmt.Println("Encrypted test message with public key entity.")
 
-	// Create private key entity
 	privEntity, err := pgp.GetEntity([]byte(TestPublicKey), []byte(TestPrivateKey))
 	if err != nil {
 		t.Error(fmt.Errorf("Error getting entity: %v", err))
 	}
+	fmt.Println("Created private key entity.")
 
-	// Decrypt message
 	decrypted, err := pgp.Decrypt(privEntity, encrypted)
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println("Decrypted message with private key entity.")
+
 	decryptedMessage := string(decrypted)
-	fmt.Printf("Decrypted:\n%s\n\n", decryptedMessage)
 	if decryptedMessage != TestMessage {
 		t.Error(errors.New("Decrypted message does not equal original."))
 	}
+	fmt.Println("Decrypted message equals original message.")
+	fmt.Println("Entcrypt test: END\n")
 }
 
 const TestMessage = "hello world"
